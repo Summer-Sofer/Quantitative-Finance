@@ -15,21 +15,21 @@ import fix_yahoo_finance as yf
 
 def create_dataset(stock_symbol, start_date, end_date, lags=5):
 
-    #fetch the stock data from Yahoo Finance
+    #get the stock data from Yahoo Finance
 	df = pdr.get_data_yahoo(stock_symbol, start_date,end_date)
 
     #create a new dataframe
-	#we want to use additional features: lagged returns...today's returns, yesterday's returns etc
+	# adding new features is an option, however doesnt always make model better.
 	tslag = pd.DataFrame(index=df.index)
 	tslag["Today"] = df["Adj Close"]
 	tslag["Volume"] = df["Volume"]
 
-    # Create the shifted lag series of prior trading period close values
+    # Create the shifted lag series 
 	for i in range(0, lags):
 		tslag["Lag%s" % str(i+1)] = df["Adj Close"].shift(i+1)
 
 
-    #create the returns DataFrame
+    #create returns DataFrame
 	dfret = pd.DataFrame(index=tslag.index)
 	dfret["Volume"] = tslag["Volume"]
 	dfret["Today"] = tslag["Today"].pct_change()*100.0
@@ -42,7 +42,7 @@ def create_dataset(stock_symbol, start_date, end_date, lags=5):
     #"Direction" column (+1 or -1) indicating an up/down day
 	dfret["Direction"] = np.sign(dfret["Today"])
 
-	#because of the shifts there are NaN values ... we want to get rid of those NaNs
+	# get rid of those NaNs
 	dfret.drop(dfret.index[:5], inplace=True)
 
 	return dfret
