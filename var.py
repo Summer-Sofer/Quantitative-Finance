@@ -13,9 +13,9 @@ def value_at_risk(position, c, mu, sigma):
 	var = position*(mu-sigma*alpha)
 	return var
 
-#we want to calculate VaR in n days time 10days
-#we have to consider that the mean and standard deviation will change
-#mu = mu*n and sigma=sigma*sqrt(n) we have to use these tranformations
+# if we would want to calculate VaR in n days lets sat  n = 10days
+# then the mean and standard deviation will change also!
+# mu = mu*n and sigma=sigma*sqrt(n) 
 def value_at_risk_long(S, c, mu, sigma,n):
 	alpha=norm.ppf(1-c)
 	var = S*(mu*n-sigma*alpha*np.sqrt(n))
@@ -30,15 +30,14 @@ if __name__ == "__main__":
 	data = pdr.get_data_yahoo('C',data_source='yahoo',start=start_date, end= end_date)
 	#download stock related data from Yahoo Finance
 
-	#citi = web.DataReader('C',data_source='yahoo',start=start_date,end=end_date)
-
-	#we can use pct_change() to calculate daily returns
+	
+	#use pct_change() for daily returns
 	data['returns'] = data['Adj Close'].pct_change()
 
-	S = 1e6 	#this is the investment (stocks or whatever)
+	S = 1e6 	# the investment 
 	c=0.95		#condifence level: this time it is 95%
 
-	#we can assume daily returns to be normally sidtributed: mean and variance (standard deviation)
+	#we can assume daily returns to be normally distributed: mean and variance (standard deviation)
 	#can describe the process
 	mu = np.mean(data['returns'])
 	sigma = np.std(data['returns'])
