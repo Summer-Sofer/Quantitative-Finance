@@ -1,7 +1,7 @@
 # Quantitative-Finance
 Financial Modeling/ Machine Learning 
 
- # Following a Udemy course by Holczer Balazs
+ # Following a Udemy course by #Holczer Balazs
  
  1) All codes have been updated to work around ImmediateDeprecationError: 
       Yahoo Daily has been deprecated. 
